@@ -48,6 +48,21 @@ from gem.tools.mcp_server.pdf_tools.helper import get_pdf_tools_stdio_config
 from gem.tools.mcp_server.calendar_server.helper import get_calendar_stdio_config
 from gem.tools.mcp_server.woocommerce.helper import get_woocommerce_stdio_config
 from gem.tools.mcp_server.snowflake.helper import get_snowflake_stdio_config
+from inference.common.output_io import (
+    build_task_workspace,
+    write_all_trajectories_file,
+    write_eval_file,
+    write_results_file,
+    write_summary_file,
+    write_trajectory_file,
+)
+from inference.common.trajectory_schema import (
+    attach_conversation,
+    attach_events,
+    attach_metrics,
+    attach_provider_payload,
+    make_base_envelope,
+)
 
 load_dotenv()
 
@@ -907,10 +922,12 @@ def run_single_task(
         print(f"[{task_label}] Context trimming: DISABLED")
 
     # Create isolated directories for this task
-    if config_name:
-        task_workspace = Path(base_task_dir) / config_name / f"state{run_id}"
-    else:
-        task_workspace = Path(base_task_dir) / f"config_{config_id}" / f"run_{run_id}"
+    task_workspace = build_task_workspace(
+        base_task_dir=base_task_dir,
+        config_name=config_name,
+        config_id=config_id,
+        run_id=run_id,
+    )
     task_workspace.mkdir(parents=True, exist_ok=True)
 
     local_db_dir = task_workspace / "local_db"
@@ -1497,8 +1514,48 @@ def run_single_task(
                 "completed": done,
             }
 
-            with open(save_file, "w") as f:
-                json.dump(episode_data, f, indent=4)
+            envelope = make_base_envelope(
+                backend="claude_api",
+                task={
+                    "task_id": task_id,
+                    "config_id": config_id,
+                    "run_id": run_id,
+                    "config_name": config_name,
+                    "env_class": env_class,
+                    "env_params": env_params,
+                },
+            )
+            attach_conversation(
+                envelope,
+                claude_messages=claude_messages,
+                full_messages_history=full_messages_history,
+            )
+            attach_events(
+                envelope,
+                context_management=context_management_events,
+                thinking_tracking=thinking_tracking,
+                trim=trim_events,
+                cache_breakpoint_indices=cache_breakpoint_indices.copy(),
+            )
+            attach_metrics(
+                envelope,
+                accuracy=reward,
+                total_steps=step_count,
+                completed=done,
+                total_usage=total_usage.copy(),
+            )
+            attach_provider_payload(
+                envelope,
+                model=model,
+                tools=tools_info,
+                usage_tracking=usage_tracking,
+            )
+            write_trajectory_file(
+                save_file,
+                envelope=envelope,
+                legacy_payload=episode_data,
+                indent=4,
+            )
 
             print(f"[{task_label}] Progress saved to: {save_file}")
 
@@ -1549,15 +1606,13 @@ def run_single_task(
 
         # Write eval.json alongside trajectory when using config_name
         if config_name:
-            eval_data = {
-                "status": "success",
-                "accuracy": reward,
-                "steps": step_count,
-                "feedback": str(info) if info else "",
-            }
-            eval_file = task_workspace / "eval.json"
-            with open(eval_file, "w") as f:
-                json.dump(eval_data, f, indent=2)
+            write_eval_file(
+                task_workspace=task_workspace,
+                status="success",
+                accuracy=reward,
+                steps=step_count,
+                feedback=str(info) if info else "",
+            )
 
         return {
             "task_id": task_id,
@@ -1601,22 +1656,50 @@ def run_single_task(
                 "total_steps": len(episode),
             }
 
-            with open(error_save_file, "w") as f:
-                json.dump(episode_data, f, indent=4)
+            envelope = make_base_envelope(
+                backend="claude_api",
+                task={
+                    "task_id": task_id,
+                    "config_id": config_id,
+                    "run_id": run_id,
+                    "config_name": config_name,
+                    "env_class": env_class,
+                    "env_params": env_params,
+                },
+            )
+            attach_conversation(
+                envelope,
+                full_messages_history=full_messages_history,
+            )
+            attach_metrics(
+                envelope,
+                accuracy=0,
+                total_steps=len(episode),
+                completed=False,
+            )
+            attach_provider_payload(
+                envelope,
+                model=model,
+                error=str(e),
+            )
+            write_trajectory_file(
+                error_save_file,
+                envelope=envelope,
+                legacy_payload=episode_data,
+                indent=4,
+            )
 
             print(f"[{task_label}] Partial episode saved to: {error_save_file}")
 
         # Write eval.json for error case when using config_name
         if config_name:
-            eval_data = {
-                "status": "error",
-                "accuracy": 0,
-                "steps": len(episode),
-                "feedback": str(e),
-            }
-            eval_file = task_workspace / "eval.json"
-            with open(eval_file, "w") as f:
-                json.dump(eval_data, f, indent=2)
+            write_eval_file(
+                task_workspace=task_workspace,
+                status="error",
+                accuracy=0,
+                steps=len(episode),
+                feedback=str(e),
+            )
 
         return {
             "task_id": task_id,
@@ -2123,8 +2206,7 @@ def run_config_combinations(
         "results": results,
     }
 
-    with open(summary_file, "w") as f:
-        json.dump(summary, f, indent=4)
+    write_summary_file(summary_file, summary, indent=4)
 
     print(f"\nSummary saved to: {summary_file}")
 
@@ -2163,30 +2245,21 @@ def run_config_combinations(
         },
         "per_config": per_config_data,
     }
-
-    with open(results_file, "w") as f:
-        json.dump(results_data, f, indent=2)
+    write_results_file(
+        path=results_file,
+        metadata=results_data["metadata"],
+        summary=results_data["summary"],
+        per_config=results_data["per_config"],
+        indent=2,
+    )
 
     # Build and save aggregated all_trajectories.json
-    aggregated = {}
-    for result in results:
-        task_name = result.get("config_name") or group_id_to_name.get(result.get("config_id"), f"config_{result.get('config_id', 0)}")
-        state_key = f"state{result['run_id']}"
-        if task_name:
-            traj_file = Path(base_task_dir) / task_name / state_key / "trajectory.json"
-        else:
-            traj_file = Path(base_task_dir) / f"config_{result.get('config_id', 0)}" / f"run_{result['run_id']}" / "trajectory.json"
-        if traj_file.exists():
-            try:
-                with open(traj_file) as f:
-                    traj_data = json.load(f)
-                aggregated.setdefault(task_name, {})[state_key] = traj_data
-            except (json.JSONDecodeError, IOError):
-                pass
-
-    all_traj_file = Path(output_dir) / "all_trajectories.json"
-    with open(all_traj_file, "w") as f:
-        json.dump(aggregated, f, indent=2)
+    all_traj_file = write_all_trajectories_file(
+        base_task_dir=base_task_dir,
+        output_dir=output_dir,
+        results=results,
+        group_id_to_name=group_id_to_name,
+    )
 
     print(f"Results saved to: {results_file}")
     print(f"Aggregated trajectories saved to: {all_traj_file}")

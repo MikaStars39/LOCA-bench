@@ -53,6 +53,21 @@ from gem.tools.mcp_server.pdf_tools.helper import get_pdf_tools_stdio_config
 from gem.tools.mcp_server.calendar_server.helper import get_calendar_stdio_config
 from gem.tools.mcp_server.woocommerce.helper import get_woocommerce_stdio_config
 from gem.tools.mcp_server.snowflake.helper import get_snowflake_stdio_config
+from inference.common.output_io import (
+    build_task_workspace,
+    write_all_trajectories_file,
+    write_eval_file,
+    write_results_file,
+    write_summary_file,
+    write_trajectory_file,
+)
+from inference.common.trajectory_schema import (
+    attach_conversation,
+    attach_events,
+    attach_metrics,
+    attach_provider_payload,
+    make_base_envelope,
+)
 
 
 load_dotenv()
@@ -556,8 +571,42 @@ async def run_claude_agent_async(
                 episode_data["completed"] = False
 
                 try:
-                    with open(save_file, "w") as f:
-                        json.dump(episode_data, f, indent=4)
+                    envelope = make_base_envelope(
+                        backend="claude_agent",
+                        task={
+                            "task_id": episode_data.get("task_id"),
+                            "config_id": episode_data.get("config_id"),
+                            "run_id": episode_data.get("run_id"),
+                            "config_name": episode_data.get("config_name"),
+                            "env_class": episode_data.get("env_class"),
+                            "env_params": episode_data.get("env_params"),
+                        },
+                    )
+                    attach_conversation(
+                        envelope,
+                        messages=messages,
+                        full_messages_history=full_messages_history,
+                    )
+                    attach_events(
+                        envelope,
+                        clear_tool_results=clear_tool_results_events,
+                        compact=compact_events,
+                    )
+                    attach_metrics(
+                        envelope,
+                        total_steps=step_count,
+                        completed=False,
+                    )
+                    attach_provider_payload(
+                        envelope,
+                        task_label=task_label,
+                    )
+                    write_trajectory_file(
+                        save_file,
+                        envelope=envelope,
+                        legacy_payload=episode_data,
+                        indent=4,
+                    )
                     print(f"[{task_label}] Progress saved to: {save_file}")
                 except Exception as e:
                     print(f"[{task_label}] Warning: Failed to save progress: {e}")
@@ -610,10 +659,12 @@ def run_single_task(
     print(f"[{task_label}] Params: {env_params}")
 
     # Create isolated directories for this task
-    if config_name:
-        task_workspace = Path(base_task_dir) / config_name / f"state{run_id}"
-    else:
-        task_workspace = Path(base_task_dir) / f"config_{config_id}" / f"run_{run_id}"
+    task_workspace = build_task_workspace(
+        base_task_dir=base_task_dir,
+        config_name=config_name,
+        config_id=config_id,
+        run_id=run_id,
+    )
     task_workspace.mkdir(parents=True, exist_ok=True)
 
     local_db_dir = task_workspace / "local_db"
@@ -708,14 +759,44 @@ def run_single_task(
         print(f"[{task_label}] Available tools: {len(tools_info) if tools_info else 0}")
 
         # Update episode data with initial info
+        episode_data["config_name"] = config_name
         episode_data["user_prompt"] = user_prompt
         episode_data["tools"] = tools_info
         episode_data["initial_observation"] = obs
         episode_data["mcp_servers"] = list(mcp_servers.keys())
 
         # Save initial state
-        with open(save_file, "w") as f:
-            json.dump(episode_data, f, indent=4)
+        envelope = make_base_envelope(
+            backend="claude_agent",
+            task={
+                "task_id": task_id,
+                "config_id": config_id,
+                "run_id": run_id,
+                "config_name": config_name,
+                "env_class": env_class,
+                "env_params": env_params,
+            },
+        )
+        attach_conversation(
+            envelope,
+            user_prompt=user_prompt,
+        )
+        attach_metrics(
+            envelope,
+            total_steps=0,
+            completed=False,
+        )
+        attach_provider_payload(
+            envelope,
+            tools=tools_info,
+            mcp_servers=list(mcp_servers.keys()),
+        )
+        write_trajectory_file(
+            save_file,
+            envelope=envelope,
+            legacy_payload=episode_data,
+            indent=4,
+        )
         print(f"[{task_label}] Initial state saved to: {save_file}")
 
         # Run Claude Agent to solve the task (with incremental saving)
@@ -769,8 +850,45 @@ def run_single_task(
               f"output_tokens={usage_summary['total_output_tokens']}")
 
         # Save progress after Claude Agent completes
-        with open(save_file, "w") as f:
-            json.dump(episode_data, f, indent=4)
+        envelope = make_base_envelope(
+            backend="claude_agent",
+            task={
+                "task_id": task_id,
+                "config_id": config_id,
+                "run_id": run_id,
+                "config_name": config_name,
+                "env_class": env_class,
+                "env_params": env_params,
+            },
+        )
+        attach_conversation(
+            envelope,
+            messages=messages,
+            full_messages_history=full_messages_history,
+        )
+        attach_events(
+            envelope,
+            clear_tool_results=clear_tool_results_events,
+            compact=compact_events,
+        )
+        attach_metrics(
+            envelope,
+            accuracy=episode_data.get("accuracy"),
+            total_steps=episode_data.get("total_steps"),
+            completed=False,
+        )
+        attach_provider_payload(
+            envelope,
+            usage_summary=usage_summary,
+            tools=tools_info,
+            mcp_servers=list(mcp_servers.keys()),
+        )
+        write_trajectory_file(
+            save_file,
+            envelope=envelope,
+            legacy_payload=episode_data,
+            indent=4,
+        )
         print(f"[{task_label}] Claude Agent completed, progress saved")
 
         # Evaluate the result using the environment
@@ -793,8 +911,50 @@ def run_single_task(
         episode_data["duration"] = episode_data["end_time"] - episode_data["start_time"]
 
         # Save final episode data
-        with open(save_file, "w") as f:
-            json.dump(episode_data, f, indent=4)
+        envelope = make_base_envelope(
+            backend="claude_agent",
+            task={
+                "task_id": task_id,
+                "config_id": config_id,
+                "run_id": run_id,
+                "config_name": config_name,
+                "env_class": env_class,
+                "env_params": env_params,
+            },
+        )
+        attach_conversation(
+            envelope,
+            messages=messages,
+            full_messages_history=full_messages_history,
+            final_observation=env_observation,
+        )
+        attach_events(
+            envelope,
+            clear_tool_results=clear_tool_results_events,
+            compact=compact_events,
+            step_info=step_info,
+        )
+        attach_metrics(
+            envelope,
+            accuracy=env_reward,
+            total_steps=len(episode),
+            completed=True,
+            duration=episode_data["duration"],
+            terminated=terminated,
+            truncated=truncated,
+        )
+        attach_provider_payload(
+            envelope,
+            usage_summary=usage_summary,
+            tools=tools_info,
+            mcp_servers=list(mcp_servers.keys()),
+        )
+        write_trajectory_file(
+            save_file,
+            envelope=envelope,
+            legacy_payload=episode_data,
+            indent=4,
+        )
 
         print(f"[{task_label}] Completed successfully!")
         print(f"[{task_label}] Episode saved to: {save_file}")
@@ -805,15 +965,13 @@ def run_single_task(
 
         # Write eval.json alongside trajectory when using config_name
         if config_name:
-            eval_data = {
-                "status": "success",
-                "accuracy": env_reward,
-                "steps": len(episode),
-                "feedback": str(step_info) if step_info else "",
-            }
-            eval_file = task_workspace / "eval.json"
-            with open(eval_file, "w") as f:
-                json.dump(eval_data, f, indent=2)
+            write_eval_file(
+                task_workspace=task_workspace,
+                status="success",
+                accuracy=env_reward,
+                steps=len(episode),
+                feedback=str(step_info) if step_info else "",
+            )
 
         return {
             "task_id": task_id,
@@ -854,22 +1012,58 @@ def run_single_task(
             error_save_file = task_workspace / "trajectory.json"
         else:
             error_save_file = output_path / f"config{config_id}_run{run_id}-episode-error-{timestamp}.json"
-        with open(error_save_file, "w") as f:
-            json.dump(episode_data, f, indent=4)
+        envelope = make_base_envelope(
+            backend="claude_agent",
+            task={
+                "task_id": task_id,
+                "config_id": config_id,
+                "run_id": run_id,
+                "config_name": config_name,
+                "env_class": env_class,
+                "env_params": env_params,
+            },
+        )
+        attach_conversation(
+            envelope,
+            messages=episode_data.get("messages", []),
+            full_messages_history=episode_data.get("full_messages_history", []),
+        )
+        attach_events(
+            envelope,
+            clear_tool_results=episode_data.get("clear_tool_results_events", []),
+            compact=episode_data.get("compact_events", []),
+            error_traceback=episode_data.get("error_traceback"),
+        )
+        attach_metrics(
+            envelope,
+            accuracy=0,
+            total_steps=len(episode_data.get("steps", [])),
+            completed=False,
+            duration=episode_data.get("duration", 0),
+        )
+        attach_provider_payload(
+            envelope,
+            usage_summary=episode_data.get("usage_summary", {}),
+            error=str(e),
+        )
+        write_trajectory_file(
+            error_save_file,
+            envelope=envelope,
+            legacy_payload=episode_data,
+            indent=4,
+        )
 
         print(f"[{task_label}] Error episode saved to: {error_save_file}")
 
         # Write eval.json for error case when using config_name
         if config_name:
-            eval_data = {
-                "status": "error",
-                "accuracy": 0,
-                "steps": len(episode_data.get("steps", [])),
-                "feedback": str(e),
-            }
-            eval_file = task_workspace / "eval.json"
-            with open(eval_file, "w") as f:
-                json.dump(eval_data, f, indent=2)
+            write_eval_file(
+                task_workspace=task_workspace,
+                status="error",
+                accuracy=0,
+                steps=len(episode_data.get("steps", [])),
+                feedback=str(e),
+            )
 
         return {
             "task_id": task_id,
@@ -1305,8 +1499,7 @@ def run_config_combinations(
         "results": results,
     }
 
-    with open(summary_file, "w") as f:
-        json.dump(summary, f, indent=4)
+    write_summary_file(summary_file, summary, indent=4)
 
     print(f"\nSummary saved to: {summary_file}")
 
@@ -1345,30 +1538,21 @@ def run_config_combinations(
         },
         "per_config": per_config_data,
     }
-
-    with open(results_file, "w") as f:
-        json.dump(results_data, f, indent=2)
+    write_results_file(
+        path=results_file,
+        metadata=results_data["metadata"],
+        summary=results_data["summary"],
+        per_config=results_data["per_config"],
+        indent=2,
+    )
 
     # Build and save aggregated all_trajectories.json
-    aggregated = {}
-    for result in results:
-        task_name = result.get("config_name") or group_id_to_name.get(result.get("config_id"), f"config_{result.get('config_id', 0)}")
-        state_key = f"state{result['run_id']}"
-        if task_name:
-            traj_file = Path(base_task_dir) / task_name / state_key / "trajectory.json"
-        else:
-            traj_file = Path(base_task_dir) / f"config_{result.get('config_id', 0)}" / f"run_{result['run_id']}" / "trajectory.json"
-        if traj_file.exists():
-            try:
-                with open(traj_file) as f:
-                    traj_data = json.load(f)
-                aggregated.setdefault(task_name, {})[state_key] = traj_data
-            except (json.JSONDecodeError, IOError):
-                pass
-
-    all_traj_file = Path(output_dir) / "all_trajectories.json"
-    with open(all_traj_file, "w") as f:
-        json.dump(aggregated, f, indent=2)
+    all_traj_file = write_all_trajectories_file(
+        base_task_dir=base_task_dir,
+        output_dir=output_dir,
+        results=results,
+        group_id_to_name=group_id_to_name,
+    )
 
     print(f"Results saved to: {results_file}")
     print(f"Aggregated trajectories saved to: {all_traj_file}")

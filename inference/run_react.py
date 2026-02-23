@@ -75,6 +75,21 @@ from gem.tools.mcp_server.pdf_tools.helper import get_pdf_tools_stdio_config
 from gem.tools.mcp_server.calendar_server.helper import get_calendar_stdio_config
 from gem.tools.mcp_server.woocommerce.helper import get_woocommerce_stdio_config
 from gem.tools.mcp_server.snowflake.helper import get_snowflake_stdio_config
+from inference.common.output_io import (
+    build_task_workspace,
+    write_all_trajectories_file,
+    write_eval_file,
+    write_json_file,
+    write_results_file,
+    write_trajectory_file,
+)
+from inference.common.trajectory_schema import (
+    attach_conversation,
+    attach_events,
+    attach_metrics,
+    attach_provider_payload,
+    make_base_envelope,
+)
 
 load_dotenv()
 
@@ -1124,10 +1139,12 @@ def run_single_task(
         print(f"[Task {task_id} | {task_label}] Params: {env_params}")
 
     # Create isolated directories for this task
-    if config_name:
-        task_workspace = Path(base_task_dir) / config_name / f"state{run_id}"
-    else:
-        task_workspace = Path(base_task_dir) / f"config_{config_id}" / f"run_{run_id}"
+    task_workspace = build_task_workspace(
+        base_task_dir=base_task_dir,
+        config_name=config_name,
+        config_id=config_id,
+        run_id=run_id,
+    )
     task_workspace.mkdir(parents=True, exist_ok=True)
     
     local_db_dir = task_workspace / "local_db"
@@ -1255,10 +1272,7 @@ def run_single_task(
         full_messages_history.append(initial_user_message.copy())  # Add initial user prompt to full history
         
         # Prepare output path - save trajectory in task workspace
-        if config_name:
-            save_file = Path(base_task_dir) / config_name / f"state{run_id}" / "trajectory.json"
-        else:
-            save_file = Path(base_task_dir) / f"config_{config_id}" / f"run_{run_id}" / "trajectory.json"
+        save_file = task_workspace / "trajectory.json"
         
         # Run interaction loop
         done = False
@@ -1849,15 +1863,52 @@ def run_single_task(
                 },
             }
 
-            with open(save_file, "w") as f:
-                json.dump(episode_data, f, indent=2)
+            envelope = make_base_envelope(
+                backend="openai",
+                task={
+                    "task_id": task_id,
+                    "config_id": config_id,
+                    "run_id": run_id,
+                    "config_name": config_name,
+                    "env_class": env_class,
+                    "env_params": env_params,
+                },
+            )
+            attach_conversation(
+                envelope,
+                messages=messages,
+                full_messages_history=full_messages_history,
+            )
+            attach_events(
+                envelope,
+                reset=reset_events or [],
+                summary=summary_events or [],
+                trim=trim_events or [],
+                thinking_reset=thinking_reset_events or [],
+            )
+            attach_metrics(
+                envelope,
+                accuracy=reward,
+                total_steps=step_count,
+                completed=done,
+            )
+            attach_provider_payload(
+                envelope,
+                model=model,
+                usage_tracking=usage_tracking,
+            )
+            write_trajectory_file(
+                save_file,
+                envelope=envelope,
+                legacy_payload=episode_data,
+                indent=2,
+            )
 
             # Save stats.json with API usage tracking (progress)
             if usage_tracking:
                 stats_data = {"usage_tracking": usage_tracking}
                 stats_file = save_file.parent / "token_stats.json"
-                with open(stats_file, "w") as f:
-                    json.dump(stats_data, f, indent=2)
+                write_json_file(stats_file, stats_data, indent=2)
 
             if verbose:
                 print(f"[Task {task_id} | {task_label}] Progress saved to: {save_file}")
@@ -1878,27 +1929,62 @@ def run_single_task(
             },
         }
 
-        with open(save_file, "w") as f:
-            json.dump(episode_data, f, indent=2)
+        envelope = make_base_envelope(
+            backend="openai",
+            task={
+                "task_id": task_id,
+                "config_id": config_id,
+                "run_id": run_id,
+                "config_name": config_name,
+                "env_class": env_class,
+                "env_params": env_params,
+            },
+        )
+        attach_conversation(
+            envelope,
+            messages=messages,
+            full_messages_history=full_messages_history,
+        )
+        attach_events(
+            envelope,
+            reset=reset_events or [],
+            summary=summary_events or [],
+            trim=trim_events or [],
+            thinking_reset=thinking_reset_events or [],
+        )
+        attach_metrics(
+            envelope,
+            accuracy=reward,
+            total_steps=step_count,
+            completed=True,
+        )
+        attach_provider_payload(
+            envelope,
+            model=model,
+            usage_tracking=usage_tracking,
+        )
+        write_trajectory_file(
+            save_file,
+            envelope=envelope,
+            legacy_payload=episode_data,
+            indent=2,
+        )
 
         # Save token_stats.json with API usage tracking
         if usage_tracking:
             stats_data = {"usage_tracking": usage_tracking}
             stats_file = save_file.parent / "token_stats.json"
-            with open(stats_file, "w") as f:
-                json.dump(stats_data, f, indent=2)
+            write_json_file(stats_file, stats_data, indent=2)
 
         # Save eval.json alongside trajectory.json
         feedback = info.get("env_observation", "") if info else ""
-        eval_data = {
-            "status": "success",
-            "accuracy": reward,
-            "steps": step_count,
-            "feedback": feedback,
-        }
-        eval_file = save_file.parent / "eval.json"
-        with open(eval_file, "w") as f:
-            json.dump(eval_data, f, indent=2)
+        write_eval_file(
+            task_workspace=save_file.parent,
+            status="success",
+            accuracy=reward,
+            steps=step_count,
+            feedback=feedback,
+        )
 
         if verbose:
             print(f"[Task {task_id} | {task_label}] Completed successfully!")
@@ -1982,10 +2068,7 @@ def run_single_task(
 
         # Save partial episode on error
         if episode:
-            if config_name:
-                error_save_file = Path(base_task_dir) / config_name / f"state{run_id}" / "trajectory.json"
-            else:
-                error_save_file = Path(base_task_dir) / f"config_{config_id}" / f"run_{run_id}" / "trajectory.json"
+            error_save_file = task_workspace / "trajectory.json"
             error_save_file.parent.mkdir(parents=True, exist_ok=True)
 
             # Create error episode data
@@ -1994,19 +2077,47 @@ def run_single_task(
                 "total_steps": len(episode),
             }
 
-            with open(error_save_file, "w") as f:
-                json.dump(episode_data, f, indent=4)
+            envelope = make_base_envelope(
+                backend="openai",
+                task={
+                    "task_id": task_id,
+                    "config_id": config_id,
+                    "run_id": run_id,
+                    "config_name": config_name,
+                    "env_class": env_class,
+                    "env_params": env_params,
+                },
+            )
+            attach_conversation(
+                envelope,
+                full_messages_history=full_messages_history,
+            )
+            attach_metrics(
+                envelope,
+                accuracy=0.0,
+                total_steps=len(episode),
+                completed=False,
+            )
+            attach_provider_payload(
+                envelope,
+                model=model,
+                error=str(e),
+            )
+            write_trajectory_file(
+                error_save_file,
+                envelope=envelope,
+                legacy_payload=episode_data,
+                indent=4,
+            )
 
             # Save eval.json for error case
-            eval_data = {
-                "status": "error",
-                "accuracy": 0.0,
-                "steps": len(episode),
-                "feedback": str(e),
-            }
-            eval_file = error_save_file.parent / "eval.json"
-            with open(eval_file, "w") as f:
-                json.dump(eval_data, f, indent=2)
+            write_eval_file(
+                task_workspace=error_save_file.parent,
+                status="error",
+                accuracy=0.0,
+                steps=len(episode),
+                feedback=str(e),
+            )
 
             if verbose:
                 print(f"[Task {task_id} | {task_label}] Partial episode saved to: {error_save_file}")
@@ -2953,30 +3064,21 @@ def run_config_combinations(
         },
         "per_config": per_config_data,
     }
-
-    with open(results_file, "w") as f:
-        json.dump(results_data, f, indent=2)
+    write_results_file(
+        path=results_file,
+        metadata=results_data["metadata"],
+        summary=results_data["summary"],
+        per_config=results_data["per_config"],
+        indent=2,
+    )
 
     # Build and save aggregated all_trajectories.json
-    aggregated = {}
-    for result in results:
-        task_name = result.get("config_name") or group_id_to_name.get(result.get("config_id"), f"config_{result.get('config_id', 0)}")
-        state_key = f"state{result['run_id']}"
-        if task_name:
-            traj_file = Path(base_task_dir) / task_name / state_key / "trajectory.json"
-        else:
-            traj_file = Path(base_task_dir) / f"config_{result.get('config_id', 0)}" / f"run_{result['run_id']}" / "trajectory.json"
-        if traj_file.exists():
-            try:
-                with open(traj_file) as f:
-                    traj_data = json.load(f)
-                aggregated.setdefault(task_name, {})[state_key] = traj_data
-            except (json.JSONDecodeError, IOError):
-                pass
-
-    all_traj_file = Path(output_dir) / "all_trajectories.json"
-    with open(all_traj_file, "w") as f:
-        json.dump(aggregated, f, indent=2)
+    all_traj_file = write_all_trajectories_file(
+        base_task_dir=base_task_dir,
+        output_dir=output_dir,
+        results=results,
+        group_id_to_name=group_id_to_name,
+    )
 
     # Print summary table.
     from rich.console import Console as _SummaryConsole

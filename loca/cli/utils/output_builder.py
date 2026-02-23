@@ -83,6 +83,42 @@ def build_param_suffix(
     return suffix
 
 
+def _build_dir_name(
+    prefix: str,
+    config_file: str,
+    model: Optional[str] = None,
+    suffix: str = "",
+    add_timestamp: bool = True,
+) -> str:
+    """Build a standardized output directory name."""
+    config_basename = Path(config_file).stem
+    dir_name = f"{prefix}_{config_basename}"
+    if model:
+        dir_name += f"_{sanitize_model_name(model)}"
+    dir_name += suffix
+    if add_timestamp:
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        dir_name += f"_{timestamp}"
+    return dir_name
+
+
+def _build_output_path(
+    prefix: str,
+    config_file: str,
+    model: Optional[str] = None,
+    suffix: str = "",
+    add_timestamp: bool = True,
+) -> Path:
+    """Build a full output path under the shared outputs root."""
+    return PROJECT_ROOT / "outputs" / _build_dir_name(
+        prefix=prefix,
+        config_file=config_file,
+        model=model,
+        suffix=suffix,
+        add_timestamp=add_timestamp,
+    )
+
+
 def build_output_dir(
     config_file: str,
     strategy: Strategy,
@@ -142,12 +178,6 @@ def build_output_dir(
             return output_path
         add_timestamp = False
 
-    # Extract config basename (without path and extension)
-    config_basename = Path(config_file).stem
-
-    # Sanitize model name
-    model_safe = sanitize_model_name(model)
-
     # Build parameter suffix
     param_suffix = build_param_suffix(
         context_reset=context_reset,
@@ -163,15 +193,13 @@ def build_output_dir(
         reasoning_max_tokens=reasoning_max_tokens,
     )
 
-    # Build directory name
-    dir_name = f"inf_{strategy.value}_{config_basename}_{model_safe}{param_suffix}"
-
-    if add_timestamp:
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        dir_name += f"_{timestamp}"
-
-    output_dir = PROJECT_ROOT / "outputs" / dir_name
-    return output_dir
+    return _build_output_path(
+        prefix=f"inf_{strategy.value}",
+        config_file=config_file,
+        model=model,
+        suffix=param_suffix,
+        add_timestamp=add_timestamp,
+    )
 
 
 def build_claude_api_output_dir(
@@ -199,9 +227,6 @@ def build_claude_api_output_dir(
     Returns:
         Path to output directory.
     """
-    config_basename = Path(config_file).stem
-    model_safe = sanitize_model_name(model)
-
     suffix = ""
     if enable_thinking:
         suffix += "_ET"
@@ -216,10 +241,13 @@ def build_claude_api_output_dir(
     if max_context_size is not None:
         suffix += f"_MC{max_context_size}"
 
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    dir_name = f"inf_claude_api_{config_basename}_{model_safe}{suffix}_{timestamp}"
-
-    return PROJECT_ROOT / "outputs" / dir_name
+    return _build_output_path(
+        prefix="inf_claude_api",
+        config_file=config_file,
+        model=model,
+        suffix=suffix,
+        add_timestamp=True,
+    )
 
 
 def build_claude_agent_output_dir(
@@ -243,8 +271,6 @@ def build_claude_agent_output_dir(
     Returns:
         Path to output directory.
     """
-    config_basename = Path(config_file).stem
-
     suffix = ""
     if use_clear_tool_uses:
         suffix += "_CTU"
@@ -257,10 +283,13 @@ def build_claude_agent_output_dir(
     if autocompact_pct != 80:
         suffix += f"_AC{autocompact_pct}"
 
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    dir_name = f"inf_claude_agent_{config_basename}{suffix}_{timestamp}"
-
-    return PROJECT_ROOT / "outputs" / dir_name
+    return _build_output_path(
+        prefix="inf_claude_agent",
+        config_file=config_file,
+        model=None,
+        suffix=suffix,
+        add_timestamp=True,
+    )
 
 
 def build_task_dir(output_dir: Path) -> Path:

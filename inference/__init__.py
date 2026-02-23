@@ -14,7 +14,14 @@
 
 """Inference module for GEM."""
 
-from .run_react import run_config_combinations
+from typing import Any
+
+
+def run_config_combinations(*args: Any, **kwargs: Any) -> Any:
+    """Lazy entrypoint to avoid importing heavy runner deps at module import time."""
+    from .run_react import run_config_combinations as _run_config_combinations
+
+    return _run_config_combinations(*args, **kwargs)
+
 
 __all__ = ["run_config_combinations"]
-
