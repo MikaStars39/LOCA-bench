@@ -1,0 +1,741 @@
+{
+  "configurations": [
+    {
+      "env_class": "gem.envs.ab_testing_s2l.ab_testing_s2l.ABTestingS2LEnv",
+      "env_params": {
+        "num_scenarios": 120,
+        "num_days": 64,
+        "seed": 42
+      },
+      "mcp_servers": {
+        "google_cloud": {
+          "type": "google_cloud",
+          "enabled": true,
+          "params": {
+            "data_dir": "{task_workspace}/local_db/google_cloud"
+          }
+        },
+        "python_execute": {
+          "enabled": true,
+          "type": "python_execute",
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "type": "claim_done",
+          "enabled": true,
+          "params": {}
+        },
+        "filesystem": {
+          "enabled": true,
+          "type": "filesystem",
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        }
+      },
+      "name": "ABTesting-seed42"
+    },
+    {
+      "env_class": "gem.envs.ab_testing_s2l.ab_testing_s2l.ABTestingS2LEnv",
+      "env_params": {
+        "num_scenarios": 120,
+        "num_days": 64,
+        "seed": 123
+      },
+      "mcp_servers": {
+        "google_cloud": {
+          "type": "google_cloud",
+          "enabled": true,
+          "params": {
+            "data_dir": "{task_workspace}/local_db/google_cloud"
+          }
+        },
+        "python_execute": {
+          "enabled": true,
+          "type": "python_execute",
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "type": "claim_done",
+          "enabled": true,
+          "params": {}
+        },
+        "filesystem": {
+          "enabled": true,
+          "type": "filesystem",
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        }
+      },
+      "name": "ABTesting-seed123"
+    },
+    {
+      "env_class": "gem.envs.ab_testing_s2l.ab_testing_s2l.ABTestingS2LEnv",
+      "env_params": {
+        "num_scenarios": 120,
+        "num_days": 64,
+        "seed": 456
+      },
+      "mcp_servers": {
+        "google_cloud": {
+          "type": "google_cloud",
+          "enabled": true,
+          "params": {
+            "data_dir": "{task_workspace}/local_db/google_cloud"
+          }
+        },
+        "python_execute": {
+          "enabled": true,
+          "type": "python_execute",
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "type": "claim_done",
+          "enabled": true,
+          "params": {}
+        },
+        "filesystem": {
+          "enabled": true,
+          "type": "filesystem",
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        }
+      },
+      "name": "ABTesting-seed456"
+    },
+    {
+      "env_class": "gem.envs.ab_testing_s2l.ab_testing_s2l.ABTestingS2LEnv",
+      "env_params": {
+        "num_scenarios": 120,
+        "num_days": 64,
+        "seed": 789
+      },
+      "mcp_servers": {
+        "google_cloud": {
+          "type": "google_cloud",
+          "enabled": true,
+          "params": {
+            "data_dir": "{task_workspace}/local_db/google_cloud"
+          }
+        },
+        "python_execute": {
+          "enabled": true,
+          "type": "python_execute",
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "type": "claim_done",
+          "enabled": true,
+          "params": {}
+        },
+        "filesystem": {
+          "enabled": true,
+          "type": "filesystem",
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        }
+      },
+      "name": "ABTesting-seed789"
+    },
+    {
+      "env_class": "gem.envs.ab_testing_s2l.ab_testing_s2l.ABTestingS2LEnv",
+      "env_params": {
+        "num_scenarios": 120,
+        "num_days": 64,
+        "seed": 2024
+      },
+      "mcp_servers": {
+        "google_cloud": {
+          "type": "google_cloud",
+          "enabled": true,
+          "params": {
+            "data_dir": "{task_workspace}/local_db/google_cloud"
+          }
+        },
+        "python_execute": {
+          "enabled": true,
+          "type": "python_execute",
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "type": "claim_done",
+          "enabled": true,
+          "params": {}
+        },
+        "filesystem": {
+          "enabled": true,
+          "type": "filesystem",
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        }
+      },
+      "name": "ABTesting-seed2024"
+    }, {
+      "env_class": "gem.envs.ab_testing_s2l.ab_testing_s2l.ABTestingS2LEnv",
+      "env_params": {
+        "num_scenarios": 120,
+        "num_days": 64,
+        "seed": 42
+      },
+      "mcp_servers": {
+        "google_cloud": {
+          "type": "google_cloud",
+          "enabled": true,
+          "params": {
+            "data_dir": "{task_workspace}/local_db/google_cloud"
+          }
+        },
+        "python_execute": {
+          "enabled": true,
+          "type": "python_execute",
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "type": "claim_done",
+          "enabled": true,
+          "params": {}
+        },
+        "filesystem": {
+          "enabled": true,
+          "type": "filesystem",
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        }
+      },
+      "name": "ABTesting-seed42"
+    },
+    {
+      "env_class": "gem.envs.ab_testing_s2l.ab_testing_s2l.ABTestingS2LEnv",
+      "env_params": {
+        "num_scenarios": 120,
+        "num_days": 64,
+        "seed": 123
+      },
+      "mcp_servers": {
+        "google_cloud": {
+          "type": "google_cloud",
+          "enabled": true,
+          "params": {
+            "data_dir": "{task_workspace}/local_db/google_cloud"
+          }
+        },
+        "python_execute": {
+          "enabled": true,
+          "type": "python_execute",
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "type": "claim_done",
+          "enabled": true,
+          "params": {}
+        },
+        "filesystem": {
+          "enabled": true,
+          "type": "filesystem",
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        }
+      },
+      "name": "ABTesting-seed123"
+    },
+    {
+      "env_class": "gem.envs.ab_testing_s2l.ab_testing_s2l.ABTestingS2LEnv",
+      "env_params": {
+        "num_scenarios": 120,
+        "num_days": 64,
+        "seed": 456
+      },
+      "mcp_servers": {
+        "google_cloud": {
+          "type": "google_cloud",
+          "enabled": true,
+          "params": {
+            "data_dir": "{task_workspace}/local_db/google_cloud"
+          }
+        },
+        "python_execute": {
+          "enabled": true,
+          "type": "python_execute",
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "type": "claim_done",
+          "enabled": true,
+          "params": {}
+        },
+        "filesystem": {
+          "enabled": true,
+          "type": "filesystem",
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        }
+      },
+      "name": "ABTesting-seed456"
+    },
+    {
+      "env_class": "gem.envs.ab_testing_s2l.ab_testing_s2l.ABTestingS2LEnv",
+      "env_params": {
+        "num_scenarios": 120,
+        "num_days": 64,
+        "seed": 789
+      },
+      "mcp_servers": {
+        "google_cloud": {
+          "type": "google_cloud",
+          "enabled": true,
+          "params": {
+            "data_dir": "{task_workspace}/local_db/google_cloud"
+          }
+        },
+        "python_execute": {
+          "enabled": true,
+          "type": "python_execute",
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "type": "claim_done",
+          "enabled": true,
+          "params": {}
+        },
+        "filesystem": {
+          "enabled": true,
+          "type": "filesystem",
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        }
+      },
+      "name": "ABTesting-seed789"
+    },
+    {
+      "env_class": "gem.envs.ab_testing_s2l.ab_testing_s2l.ABTestingS2LEnv",
+      "env_params": {
+        "num_scenarios": 120,
+        "num_days": 64,
+        "seed": 2024
+      },
+      "mcp_servers": {
+        "google_cloud": {
+          "type": "google_cloud",
+          "enabled": true,
+          "params": {
+            "data_dir": "{task_workspace}/local_db/google_cloud"
+          }
+        },
+        "python_execute": {
+          "enabled": true,
+          "type": "python_execute",
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "type": "claim_done",
+          "enabled": true,
+          "params": {}
+        },
+        "filesystem": {
+          "enabled": true,
+          "type": "filesystem",
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        }
+      },
+      "name": "ABTesting-seed2024"
+    }, {
+      "env_class": "gem.envs.ab_testing_s2l.ab_testing_s2l.ABTestingS2LEnv",
+      "env_params": {
+        "num_scenarios": 120,
+        "num_days": 64,
+        "seed": 42
+      },
+      "mcp_servers": {
+        "google_cloud": {
+          "type": "google_cloud",
+          "enabled": true,
+          "params": {
+            "data_dir": "{task_workspace}/local_db/google_cloud"
+          }
+        },
+        "python_execute": {
+          "enabled": true,
+          "type": "python_execute",
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "type": "claim_done",
+          "enabled": true,
+          "params": {}
+        },
+        "filesystem": {
+          "enabled": true,
+          "type": "filesystem",
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        }
+      },
+      "name": "ABTesting-seed42"
+    },
+    {
+      "env_class": "gem.envs.ab_testing_s2l.ab_testing_s2l.ABTestingS2LEnv",
+      "env_params": {
+        "num_scenarios": 120,
+        "num_days": 64,
+        "seed": 123
+      },
+      "mcp_servers": {
+        "google_cloud": {
+          "type": "google_cloud",
+          "enabled": true,
+          "params": {
+            "data_dir": "{task_workspace}/local_db/google_cloud"
+          }
+        },
+        "python_execute": {
+          "enabled": true,
+          "type": "python_execute",
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "type": "claim_done",
+          "enabled": true,
+          "params": {}
+        },
+        "filesystem": {
+          "enabled": true,
+          "type": "filesystem",
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        }
+      },
+      "name": "ABTesting-seed123"
+    },
+    {
+      "env_class": "gem.envs.ab_testing_s2l.ab_testing_s2l.ABTestingS2LEnv",
+      "env_params": {
+        "num_scenarios": 120,
+        "num_days": 64,
+        "seed": 456
+      },
+      "mcp_servers": {
+        "google_cloud": {
+          "type": "google_cloud",
+          "enabled": true,
+          "params": {
+            "data_dir": "{task_workspace}/local_db/google_cloud"
+          }
+        },
+        "python_execute": {
+          "enabled": true,
+          "type": "python_execute",
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "type": "claim_done",
+          "enabled": true,
+          "params": {}
+        },
+        "filesystem": {
+          "enabled": true,
+          "type": "filesystem",
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        }
+      },
+      "name": "ABTesting-seed456"
+    },
+    {
+      "env_class": "gem.envs.ab_testing_s2l.ab_testing_s2l.ABTestingS2LEnv",
+      "env_params": {
+        "num_scenarios": 120,
+        "num_days": 64,
+        "seed": 789
+      },
+      "mcp_servers": {
+        "google_cloud": {
+          "type": "google_cloud",
+          "enabled": true,
+          "params": {
+            "data_dir": "{task_workspace}/local_db/google_cloud"
+          }
+        },
+        "python_execute": {
+          "enabled": true,
+          "type": "python_execute",
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "type": "claim_done",
+          "enabled": true,
+          "params": {}
+        },
+        "filesystem": {
+          "enabled": true,
+          "type": "filesystem",
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        }
+      },
+      "name": "ABTesting-seed789"
+    },
+    {
+      "env_class": "gem.envs.ab_testing_s2l.ab_testing_s2l.ABTestingS2LEnv",
+      "env_params": {
+        "num_scenarios": 120,
+        "num_days": 64,
+        "seed": 2024
+      },
+      "mcp_servers": {
+        "google_cloud": {
+          "type": "google_cloud",
+          "enabled": true,
+          "params": {
+            "data_dir": "{task_workspace}/local_db/google_cloud"
+          }
+        },
+        "python_execute": {
+          "enabled": true,
+          "type": "python_execute",
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "type": "claim_done",
+          "enabled": true,
+          "params": {}
+        },
+        "filesystem": {
+          "enabled": true,
+          "type": "filesystem",
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        }
+      },
+      "name": "ABTesting-seed2024"
+    }, {
+      "env_class": "gem.envs.ab_testing_s2l.ab_testing_s2l.ABTestingS2LEnv",
+      "env_params": {
+        "num_scenarios": 120,
+        "num_days": 64,
+        "seed": 42
+      },
+      "mcp_servers": {
+        "google_cloud": {
+          "type": "google_cloud",
+          "enabled": true,
+          "params": {
+            "data_dir": "{task_workspace}/local_db/google_cloud"
+          }
+        },
+        "python_execute": {
+          "enabled": true,
+          "type": "python_execute",
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "type": "claim_done",
+          "enabled": true,
+          "params": {}
+        },
+        "filesystem": {
+          "enabled": true,
+          "type": "filesystem",
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        }
+      },
+      "name": "ABTesting-seed42"
+    },
+    {
+      "env_class": "gem.envs.ab_testing_s2l.ab_testing_s2l.ABTestingS2LEnv",
+      "env_params": {
+        "num_scenarios": 120,
+        "num_days": 64,
+        "seed": 123
+      },
+      "mcp_servers": {
+        "google_cloud": {
+          "type": "google_cloud",
+          "enabled": true,
+          "params": {
+            "data_dir": "{task_workspace}/local_db/google_cloud"
+          }
+        },
+        "python_execute": {
+          "enabled": true,
+          "type": "python_execute",
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "type": "claim_done",
+          "enabled": true,
+          "params": {}
+        },
+        "filesystem": {
+          "enabled": true,
+          "type": "filesystem",
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        }
+      },
+      "name": "ABTesting-seed123"
+    },
+    {
+      "env_class": "gem.envs.ab_testing_s2l.ab_testing_s2l.ABTestingS2LEnv",
+      "env_params": {
+        "num_scenarios": 120,
+        "num_days": 64,
+        "seed": 456
+      },
+      "mcp_servers": {
+        "google_cloud": {
+          "type": "google_cloud",
+          "enabled": true,
+          "params": {
+            "data_dir": "{task_workspace}/local_db/google_cloud"
+          }
+        },
+        "python_execute": {
+          "enabled": true,
+          "type": "python_execute",
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "type": "claim_done",
+          "enabled": true,
+          "params": {}
+        },
+        "filesystem": {
+          "enabled": true,
+          "type": "filesystem",
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        }
+      },
+      "name": "ABTesting-seed456"
+    },
+    {
+      "env_class": "gem.envs.ab_testing_s2l.ab_testing_s2l.ABTestingS2LEnv",
+      "env_params": {
+        "num_scenarios": 120,
+        "num_days": 64,
+        "seed": 789
+      },
+      "mcp_servers": {
+        "google_cloud": {
+          "type": "google_cloud",
+          "enabled": true,
+          "params": {
+            "data_dir": "{task_workspace}/local_db/google_cloud"
+          }
+        },
+        "python_execute": {
+          "enabled": true,
+          "type": "python_execute",
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "type": "claim_done",
+          "enabled": true,
+          "params": {}
+        },
+        "filesystem": {
+          "enabled": true,
+          "type": "filesystem",
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        }
+      },
+      "name": "ABTesting-seed789"
+    },
+    {
+      "env_class": "gem.envs.ab_testing_s2l.ab_testing_s2l.ABTestingS2LEnv",
+      "env_params": {
+        "num_scenarios": 120,
+        "num_days": 64,
+        "seed": 2024
+      },
+      "mcp_servers": {
+        "google_cloud": {
+          "type": "google_cloud",
+          "enabled": true,
+          "params": {
+            "data_dir": "{task_workspace}/local_db/google_cloud"
+          }
+        },
+        "python_execute": {
+          "enabled": true,
+          "type": "python_execute",
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "type": "claim_done",
+          "enabled": true,
+          "params": {}
+        },
+        "filesystem": {
+          "enabled": true,
+          "type": "filesystem",
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        }
+      },
+      "name": "ABTesting-seed2024"
+    }
+  ]
+}

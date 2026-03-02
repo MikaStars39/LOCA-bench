@@ -1,0 +1,1284 @@
+{
+  "configurations": [
+    {
+      "env_class": "gem.envs.ab_testing_s2l.ab_testing_s2l.ABTestingS2LEnv",
+      "env_params": {
+        "num_scenarios": 120,
+        "num_days": 64,
+        "seed": 42
+      },
+      "mcp_servers": {
+        "google_cloud": {
+          "type": "google_cloud",
+          "enabled": true,
+          "params": {
+            "data_dir": "{task_workspace}/local_db/google_cloud"
+          }
+        },
+        "python_execute": {
+          "enabled": true,
+          "type": "python_execute",
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "type": "claim_done",
+          "enabled": true,
+          "params": {}
+        },
+        "filesystem": {
+          "enabled": true,
+          "type": "filesystem",
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        }
+      },
+      "name": "ABTesting-seed42"
+    },
+    {
+      "env_class": "gem.envs.ab_testing_s2l.ab_testing_s2l.ABTestingS2LEnv",
+      "env_params": {
+        "num_scenarios": 120,
+        "num_days": 64,
+        "seed": 123
+      },
+      "mcp_servers": {
+        "google_cloud": {
+          "type": "google_cloud",
+          "enabled": true,
+          "params": {
+            "data_dir": "{task_workspace}/local_db/google_cloud"
+          }
+        },
+        "python_execute": {
+          "enabled": true,
+          "type": "python_execute",
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "type": "claim_done",
+          "enabled": true,
+          "params": {}
+        },
+        "filesystem": {
+          "enabled": true,
+          "type": "filesystem",
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        }
+      },
+      "name": "ABTesting-seed123"
+    },
+    {
+      "env_class": "gem.envs.ab_testing_s2l.ab_testing_s2l.ABTestingS2LEnv",
+      "env_params": {
+        "num_scenarios": 120,
+        "num_days": 64,
+        "seed": 456
+      },
+      "mcp_servers": {
+        "google_cloud": {
+          "type": "google_cloud",
+          "enabled": true,
+          "params": {
+            "data_dir": "{task_workspace}/local_db/google_cloud"
+          }
+        },
+        "python_execute": {
+          "enabled": true,
+          "type": "python_execute",
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "type": "claim_done",
+          "enabled": true,
+          "params": {}
+        },
+        "filesystem": {
+          "enabled": true,
+          "type": "filesystem",
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        }
+      },
+      "name": "ABTesting-seed456"
+    },
+    {
+      "env_class": "gem.envs.ab_testing_s2l.ab_testing_s2l.ABTestingS2LEnv",
+      "env_params": {
+        "num_scenarios": 120,
+        "num_days": 64,
+        "seed": 789
+      },
+      "mcp_servers": {
+        "google_cloud": {
+          "type": "google_cloud",
+          "enabled": true,
+          "params": {
+            "data_dir": "{task_workspace}/local_db/google_cloud"
+          }
+        },
+        "python_execute": {
+          "enabled": true,
+          "type": "python_execute",
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "type": "claim_done",
+          "enabled": true,
+          "params": {}
+        },
+        "filesystem": {
+          "enabled": true,
+          "type": "filesystem",
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        }
+      },
+      "name": "ABTesting-seed789"
+    },
+    {
+      "env_class": "gem.envs.ab_testing_s2l.ab_testing_s2l.ABTestingS2LEnv",
+      "env_params": {
+        "num_scenarios": 120,
+        "num_days": 64,
+        "seed": 2024
+      },
+      "mcp_servers": {
+        "google_cloud": {
+          "type": "google_cloud",
+          "enabled": true,
+          "params": {
+            "data_dir": "{task_workspace}/local_db/google_cloud"
+          }
+        },
+        "python_execute": {
+          "enabled": true,
+          "type": "python_execute",
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "type": "claim_done",
+          "enabled": true,
+          "params": {}
+        },
+        "filesystem": {
+          "enabled": true,
+          "type": "filesystem",
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        }
+      },
+      "name": "ABTesting-seed2024"
+    },
+    {
+      "name": "ExcelMarketResearch-easy",
+      "env_class": "gem.envs.excel_market_research_s2l.excel_market_research_s2l.ExcelMarketResearchS2LEnv",
+      "env_params": {
+        "start_year": 1989,
+        "num_years": 40,
+        "num_raw_categories": 20,
+        "num_internal_categories": 6,
+        "seed": 42,
+        "verbose": false
+      },
+      "mcp_servers": {
+        "excel": {
+          "type": "excel",
+          "enabled": true,
+          "params": {
+            "excel_files_path": "{agent_workspace}"
+          }
+        },
+        "filesystem": {
+          "type": "filesystem",
+          "enabled": true,
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        },
+        "terminal": {
+          "type": "terminal",
+          "enabled": true,
+          "params": {
+            "allowed_dir": "{agent_workspace}",
+            "allowed_flags": "all",
+            "max_command_length": "2048",
+            "command_timeout": "60",
+            "allow_shell_operators": "true"
+          }
+        },
+        "python_execute": {
+          "type": "python_execute",
+          "enabled": true,
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "type": "claim_done",
+          "enabled": true,
+          "params": {}
+        }
+      }
+    },
+    {
+      "name": "ExcelMarketResearch-easy",
+      "env_class": "gem.envs.excel_market_research_s2l.excel_market_research_s2l.ExcelMarketResearchS2LEnv",
+      "env_params": {
+        "start_year": 1989,
+        "num_years": 40,
+        "num_raw_categories": 20,
+        "num_internal_categories": 6,
+        "seed": 123,
+        "verbose": false
+      },
+      "mcp_servers": {
+        "excel": {
+          "type": "excel",
+          "enabled": true,
+          "params": {
+            "excel_files_path": "{agent_workspace}"
+          }
+        },
+        "filesystem": {
+          "type": "filesystem",
+          "enabled": true,
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        },
+        "terminal": {
+          "type": "terminal",
+          "enabled": true,
+          "params": {
+            "allowed_dir": "{agent_workspace}",
+            "allowed_flags": "all",
+            "max_command_length": "2048",
+            "command_timeout": "60",
+            "allow_shell_operators": "true"
+          }
+        },
+        "python_execute": {
+          "type": "python_execute",
+          "enabled": true,
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "type": "claim_done",
+          "enabled": true,
+          "params": {}
+        }
+      }
+    },
+    {
+      "name": "ExcelMarketResearch-easy",
+      "env_class": "gem.envs.excel_market_research_s2l.excel_market_research_s2l.ExcelMarketResearchS2LEnv",
+      "env_params": {
+        "start_year": 1989,
+        "num_years": 40,
+        "num_raw_categories": 20,
+        "num_internal_categories": 6,
+        "seed": 456,
+        "verbose": false
+      },
+      "mcp_servers": {
+        "excel": {
+          "type": "excel",
+          "enabled": true,
+          "params": {
+            "excel_files_path": "{agent_workspace}"
+          }
+        },
+        "filesystem": {
+          "type": "filesystem",
+          "enabled": true,
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        },
+        "terminal": {
+          "type": "terminal",
+          "enabled": true,
+          "params": {
+            "allowed_dir": "{agent_workspace}",
+            "allowed_flags": "all",
+            "max_command_length": "2048",
+            "command_timeout": "60",
+            "allow_shell_operators": "true"
+          }
+        },
+        "python_execute": {
+          "type": "python_execute",
+          "enabled": true,
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "type": "claim_done",
+          "enabled": true,
+          "params": {}
+        }
+      }
+    },
+    {
+      "name": "ExcelMarketResearch-easy",
+      "env_class": "gem.envs.excel_market_research_s2l.excel_market_research_s2l.ExcelMarketResearchS2LEnv",
+      "env_params": {
+        "start_year": 1989,
+        "num_years": 40,
+        "num_raw_categories": 20,
+        "num_internal_categories": 6,
+        "seed": 789,
+        "verbose": false
+      },
+      "mcp_servers": {
+        "excel": {
+          "type": "excel",
+          "enabled": true,
+          "params": {
+            "excel_files_path": "{agent_workspace}"
+          }
+        },
+        "filesystem": {
+          "type": "filesystem",
+          "enabled": true,
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        },
+        "terminal": {
+          "type": "terminal",
+          "enabled": true,
+          "params": {
+            "allowed_dir": "{agent_workspace}",
+            "allowed_flags": "all",
+            "max_command_length": "2048",
+            "command_timeout": "60",
+            "allow_shell_operators": "true"
+          }
+        },
+        "python_execute": {
+          "type": "python_execute",
+          "enabled": true,
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "type": "claim_done",
+          "enabled": true,
+          "params": {}
+        }
+      }
+    },
+    {
+      "name": "ExcelMarketResearch-easy",
+      "env_class": "gem.envs.excel_market_research_s2l.excel_market_research_s2l.ExcelMarketResearchS2LEnv",
+      "env_params": {
+        "start_year": 1989,
+        "num_years": 40,
+        "num_raw_categories": 20,
+        "num_internal_categories": 6,
+        "seed": 2024,
+        "verbose": false
+      },
+      "mcp_servers": {
+        "excel": {
+          "type": "excel",
+          "enabled": true,
+          "params": {
+            "excel_files_path": "{agent_workspace}"
+          }
+        },
+        "filesystem": {
+          "type": "filesystem",
+          "enabled": true,
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        },
+        "terminal": {
+          "type": "terminal",
+          "enabled": true,
+          "params": {
+            "allowed_dir": "{agent_workspace}",
+            "allowed_flags": "all",
+            "max_command_length": "2048",
+            "command_timeout": "60",
+            "allow_shell_operators": "true"
+          }
+        },
+        "python_execute": {
+          "type": "python_execute",
+          "enabled": true,
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "type": "claim_done",
+          "enabled": true,
+          "params": {}
+        }
+      }
+    },
+    {
+      "name": "CanvasArrangeExam-5-courses",
+      "env_class": "gem.envs.canvas_arrange_exam_s2l.canvas_arrange_exam_s2l.CanvasArrangeExamS2LEnv",
+      "env_params": {
+        "seed": 42,
+        "num_courses": 35,
+        "canvas_exam_rate": 0.8,
+        "email_exam_rate": 0.2
+      },
+      "mcp_servers": {
+        "canvas": {
+          "enabled": true,
+          "type": "canvas",
+          "params": {
+            "data_dir": "{task_workspace}/local_db/canvas",
+            "login_id": "rkelly27@mcp.com",
+            "password": "student_password_123"
+          }
+        },
+        "email": {
+          "enabled": true,
+          "type": "email",
+          "params": {
+            "data_dir": "{task_workspace}/local_db/emails",
+            "email": "rkelly27@mcp.com",
+            "password": "ronald_81q2O"
+          }
+        },
+        "excel": {
+          "enabled": true,
+          "type": "excel",
+          "params": {
+            "excel_files_path": "{agent_workspace}"
+          }
+        },
+        "filesystem": {
+          "enabled": true,
+          "type": "filesystem",
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        },
+        "python_execute": {
+          "enabled": true,
+          "type": "python_execute",
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "enabled": true,
+          "type": "claim_done",
+          "params": {}
+        },
+        "memory": {
+          "enabled": true,
+          "type": "memory",
+          "params": {
+            "memory_file_path": "{agent_workspace}/memory/memory.json"
+          }
+        }
+      }
+    },
+    {
+      "name": "CanvasArrangeExam-5-courses",
+      "env_class": "gem.envs.canvas_arrange_exam_s2l.canvas_arrange_exam_s2l.CanvasArrangeExamS2LEnv",
+      "env_params": {
+        "seed": 123,
+        "num_courses": 35,
+        "canvas_exam_rate": 0.8,
+        "email_exam_rate": 0.2
+      },
+      "mcp_servers": {
+        "canvas": {
+          "enabled": true,
+          "type": "canvas",
+          "params": {
+            "data_dir": "{task_workspace}/local_db/canvas",
+            "login_id": "rkelly27@mcp.com",
+            "password": "student_password_123"
+          }
+        },
+        "email": {
+          "enabled": true,
+          "type": "email",
+          "params": {
+            "data_dir": "{task_workspace}/local_db/emails",
+            "email": "rkelly27@mcp.com",
+            "password": "ronald_81q2O"
+          }
+        },
+        "excel": {
+          "enabled": true,
+          "type": "excel",
+          "params": {
+            "excel_files_path": "{agent_workspace}"
+          }
+        },
+        "filesystem": {
+          "enabled": true,
+          "type": "filesystem",
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        },
+        "python_execute": {
+          "enabled": true,
+          "type": "python_execute",
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "enabled": true,
+          "type": "claim_done",
+          "params": {}
+        },
+        "memory": {
+          "enabled": true,
+          "type": "memory",
+          "params": {
+            "memory_file_path": "{agent_workspace}/memory/memory.json"
+          }
+        }
+      }
+    },
+    {
+      "name": "CanvasArrangeExam-5-courses",
+      "env_class": "gem.envs.canvas_arrange_exam_s2l.canvas_arrange_exam_s2l.CanvasArrangeExamS2LEnv",
+      "env_params": {
+        "seed": 456,
+        "num_courses": 35,
+        "canvas_exam_rate": 0.8,
+        "email_exam_rate": 0.2
+      },
+      "mcp_servers": {
+        "canvas": {
+          "enabled": true,
+          "type": "canvas",
+          "params": {
+            "data_dir": "{task_workspace}/local_db/canvas",
+            "login_id": "rkelly27@mcp.com",
+            "password": "student_password_123"
+          }
+        },
+        "email": {
+          "enabled": true,
+          "type": "email",
+          "params": {
+            "data_dir": "{task_workspace}/local_db/emails",
+            "email": "rkelly27@mcp.com",
+            "password": "ronald_81q2O"
+          }
+        },
+        "excel": {
+          "enabled": true,
+          "type": "excel",
+          "params": {
+            "excel_files_path": "{agent_workspace}"
+          }
+        },
+        "filesystem": {
+          "enabled": true,
+          "type": "filesystem",
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        },
+        "python_execute": {
+          "enabled": true,
+          "type": "python_execute",
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "enabled": true,
+          "type": "claim_done",
+          "params": {}
+        },
+        "memory": {
+          "enabled": true,
+          "type": "memory",
+          "params": {
+            "memory_file_path": "{agent_workspace}/memory/memory.json"
+          }
+        }
+      }
+    },
+    {
+      "name": "CanvasArrangeExam-5-courses",
+      "env_class": "gem.envs.canvas_arrange_exam_s2l.canvas_arrange_exam_s2l.CanvasArrangeExamS2LEnv",
+      "env_params": {
+        "seed": 789,
+        "num_courses": 35,
+        "canvas_exam_rate": 0.8,
+        "email_exam_rate": 0.2
+      },
+      "mcp_servers": {
+        "canvas": {
+          "enabled": true,
+          "type": "canvas",
+          "params": {
+            "data_dir": "{task_workspace}/local_db/canvas",
+            "login_id": "rkelly27@mcp.com",
+            "password": "student_password_123"
+          }
+        },
+        "email": {
+          "enabled": true,
+          "type": "email",
+          "params": {
+            "data_dir": "{task_workspace}/local_db/emails",
+            "email": "rkelly27@mcp.com",
+            "password": "ronald_81q2O"
+          }
+        },
+        "excel": {
+          "enabled": true,
+          "type": "excel",
+          "params": {
+            "excel_files_path": "{agent_workspace}"
+          }
+        },
+        "filesystem": {
+          "enabled": true,
+          "type": "filesystem",
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        },
+        "python_execute": {
+          "enabled": true,
+          "type": "python_execute",
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "enabled": true,
+          "type": "claim_done",
+          "params": {}
+        },
+        "memory": {
+          "enabled": true,
+          "type": "memory",
+          "params": {
+            "memory_file_path": "{agent_workspace}/memory/memory.json"
+          }
+        }
+      }
+    },
+    {
+      "name": "CanvasArrangeExam-5-courses",
+      "env_class": "gem.envs.canvas_arrange_exam_s2l.canvas_arrange_exam_s2l.CanvasArrangeExamS2LEnv",
+      "env_params": {
+        "seed": 2024,
+        "num_courses": 35,
+        "canvas_exam_rate": 0.8,
+        "email_exam_rate": 0.2
+      },
+      "mcp_servers": {
+        "canvas": {
+          "enabled": true,
+          "type": "canvas",
+          "params": {
+            "data_dir": "{task_workspace}/local_db/canvas",
+            "login_id": "rkelly27@mcp.com",
+            "password": "student_password_123"
+          }
+        },
+        "email": {
+          "enabled": true,
+          "type": "email",
+          "params": {
+            "data_dir": "{task_workspace}/local_db/emails",
+            "email": "rkelly27@mcp.com",
+            "password": "ronald_81q2O"
+          }
+        },
+        "excel": {
+          "enabled": true,
+          "type": "excel",
+          "params": {
+            "excel_files_path": "{agent_workspace}"
+          }
+        },
+        "filesystem": {
+          "enabled": true,
+          "type": "filesystem",
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        },
+        "python_execute": {
+          "enabled": true,
+          "type": "python_execute",
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "enabled": true,
+          "type": "claim_done",
+          "params": {}
+        },
+        "memory": {
+          "enabled": true,
+          "type": "memory",
+          "params": {
+            "memory_file_path": "{agent_workspace}/memory/memory.json"
+          }
+        }
+      }
+    },
+    {
+      "name": "CourseAssistant-25-students",
+      "env_class": "gem.envs.course_assistant_s2l.course_assistant_s2l.CourseAssistantS2LEnv",
+      "env_params": {
+        "num_students": 150,
+        "dropout_rate": 0.2,
+        "submission_rate": 0.7,
+        "seed": 42
+      },
+      "mcp_servers": {
+        "excel": {
+          "enabled": true,
+          "type": "excel",
+          "params": {
+            "excel_files_path": "{agent_workspace}"
+          }
+        },
+        "email": {
+          "enabled": true,
+          "type": "email",
+          "params": {
+            "data_dir": "{task_workspace}/local_db/emails"
+          }
+        },
+        "filesystem": {
+          "enabled": true,
+          "type": "filesystem",
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        },
+        "terminal": {
+          "enabled": true,
+          "type": "terminal",
+          "params": {
+            "agent_workspace": "{agent_workspace}"
+          }
+        },
+        "python_execute": {
+          "enabled": true,
+          "type": "python_execute",
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "enabled": true,
+          "type": "claim_done",
+          "params": {}
+        }
+      }
+    },
+    {
+      "name": "CourseAssistant-25-students",
+      "env_class": "gem.envs.course_assistant_s2l.course_assistant_s2l.CourseAssistantS2LEnv",
+      "env_params": {
+        "num_students": 150,
+        "dropout_rate": 0.2,
+        "submission_rate": 0.7,
+        "seed": 123
+      },
+      "mcp_servers": {
+        "excel": {
+          "enabled": true,
+          "type": "excel",
+          "params": {
+            "excel_files_path": "{agent_workspace}"
+          }
+        },
+        "email": {
+          "enabled": true,
+          "type": "email",
+          "params": {
+            "data_dir": "{task_workspace}/local_db/emails"
+          }
+        },
+        "filesystem": {
+          "enabled": true,
+          "type": "filesystem",
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        },
+        "terminal": {
+          "enabled": true,
+          "type": "terminal",
+          "params": {
+            "agent_workspace": "{agent_workspace}"
+          }
+        },
+        "python_execute": {
+          "enabled": true,
+          "type": "python_execute",
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "enabled": true,
+          "type": "claim_done",
+          "params": {}
+        }
+      }
+    },
+    {
+      "name": "CourseAssistant-25-students",
+      "env_class": "gem.envs.course_assistant_s2l.course_assistant_s2l.CourseAssistantS2LEnv",
+      "env_params": {
+        "num_students": 150,
+        "dropout_rate": 0.2,
+        "submission_rate": 0.7,
+        "seed": 456
+      },
+      "mcp_servers": {
+        "excel": {
+          "enabled": true,
+          "type": "excel",
+          "params": {
+            "excel_files_path": "{agent_workspace}"
+          }
+        },
+        "email": {
+          "enabled": true,
+          "type": "email",
+          "params": {
+            "data_dir": "{task_workspace}/local_db/emails"
+          }
+        },
+        "filesystem": {
+          "enabled": true,
+          "type": "filesystem",
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        },
+        "terminal": {
+          "enabled": true,
+          "type": "terminal",
+          "params": {
+            "agent_workspace": "{agent_workspace}"
+          }
+        },
+        "python_execute": {
+          "enabled": true,
+          "type": "python_execute",
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "enabled": true,
+          "type": "claim_done",
+          "params": {}
+        }
+      }
+    },
+    {
+      "name": "CourseAssistant-25-students",
+      "env_class": "gem.envs.course_assistant_s2l.course_assistant_s2l.CourseAssistantS2LEnv",
+      "env_params": {
+        "num_students": 150,
+        "dropout_rate": 0.2,
+        "submission_rate": 0.7,
+        "seed": 789
+      },
+      "mcp_servers": {
+        "excel": {
+          "enabled": true,
+          "type": "excel",
+          "params": {
+            "excel_files_path": "{agent_workspace}"
+          }
+        },
+        "email": {
+          "enabled": true,
+          "type": "email",
+          "params": {
+            "data_dir": "{task_workspace}/local_db/emails"
+          }
+        },
+        "filesystem": {
+          "enabled": true,
+          "type": "filesystem",
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        },
+        "terminal": {
+          "enabled": true,
+          "type": "terminal",
+          "params": {
+            "agent_workspace": "{agent_workspace}"
+          }
+        },
+        "python_execute": {
+          "enabled": true,
+          "type": "python_execute",
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "enabled": true,
+          "type": "claim_done",
+          "params": {}
+        }
+      }
+    },
+    {
+      "name": "CourseAssistant-25-students",
+      "env_class": "gem.envs.course_assistant_s2l.course_assistant_s2l.CourseAssistantS2LEnv",
+      "env_params": {
+        "num_students": 150,
+        "dropout_rate": 0.2,
+        "submission_rate": 0.7,
+        "seed": 2024
+      },
+      "mcp_servers": {
+        "excel": {
+          "enabled": true,
+          "type": "excel",
+          "params": {
+            "excel_files_path": "{agent_workspace}"
+          }
+        },
+        "email": {
+          "enabled": true,
+          "type": "email",
+          "params": {
+            "data_dir": "{task_workspace}/local_db/emails"
+          }
+        },
+        "filesystem": {
+          "enabled": true,
+          "type": "filesystem",
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        },
+        "terminal": {
+          "enabled": true,
+          "type": "terminal",
+          "params": {
+            "agent_workspace": "{agent_workspace}"
+          }
+        },
+        "python_execute": {
+          "enabled": true,
+          "type": "python_execute",
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "enabled": true,
+          "type": "claim_done",
+          "params": {}
+        }
+      }
+    },
+    {
+      "env_class": "gem.envs.set_conf_cr_ddl_s2l.set_conf_cr_ddl_s2l.SetConfCrDdlS2LEnv",
+      "env_params": {
+        "num_target": 32,
+        "num_noise": 44,
+        "noise_emails": 5,
+        "max_conferences": 200,
+        "enable_reminders": true,
+        "enable_extensions": true,
+        "base_date": "2025-09-15",
+        "deadline_offset": 15,
+        "seed": 42,
+        "verbose": false
+      },
+      "mcp_servers": {
+        "calendar": {
+          "type": "calendar",
+          "enabled": true,
+          "params": {
+            "data_dir": "{task_workspace}/local_db/calendar"
+          }
+        },
+        "email": {
+          "type": "email",
+          "enabled": true,
+          "params": {
+            "data_dir": "{task_workspace}/local_db/emails",
+            "email": "swright@mcp.com",
+            "password": "scotaW1MyWaw"
+          }
+        },
+        "python_execute": {
+          "type": "python_execute",
+          "enabled": true,
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "type": "claim_done",
+          "enabled": true,
+          "params": {}
+        },
+        "filesystem": {
+          "type": "filesystem",
+          "enabled": true,
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        }
+      },
+      "name": "SetConfCrDdl-seed42"
+    },
+    {
+      "env_class": "gem.envs.set_conf_cr_ddl_s2l.set_conf_cr_ddl_s2l.SetConfCrDdlS2LEnv",
+      "env_params": {
+        "num_target": 32,
+        "num_noise": 44,
+        "noise_emails": 5,
+        "max_conferences": 200,
+        "enable_reminders": true,
+        "enable_extensions": true,
+        "base_date": "2025-09-15",
+        "deadline_offset": 15,
+        "seed": 123,
+        "verbose": false
+      },
+      "mcp_servers": {
+        "calendar": {
+          "type": "calendar",
+          "enabled": true,
+          "params": {
+            "data_dir": "{task_workspace}/local_db/calendar"
+          }
+        },
+        "email": {
+          "type": "email",
+          "enabled": true,
+          "params": {
+            "data_dir": "{task_workspace}/local_db/emails",
+            "email": "swright@mcp.com",
+            "password": "scotaW1MyWaw"
+          }
+        },
+        "python_execute": {
+          "type": "python_execute",
+          "enabled": true,
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "type": "claim_done",
+          "enabled": true,
+          "params": {}
+        },
+        "filesystem": {
+          "type": "filesystem",
+          "enabled": true,
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        }
+      },
+      "name": "SetConfCrDdl-seed123"
+    },
+    {
+      "env_class": "gem.envs.set_conf_cr_ddl_s2l.set_conf_cr_ddl_s2l.SetConfCrDdlS2LEnv",
+      "env_params": {
+        "num_target": 32,
+        "num_noise": 44,
+        "noise_emails": 5,
+        "max_conferences": 200,
+        "enable_reminders": true,
+        "enable_extensions": true,
+        "base_date": "2025-09-15",
+        "deadline_offset": 15,
+        "seed": 456,
+        "verbose": false
+      },
+      "mcp_servers": {
+        "calendar": {
+          "type": "calendar",
+          "enabled": true,
+          "params": {
+            "data_dir": "{task_workspace}/local_db/calendar"
+          }
+        },
+        "email": {
+          "type": "email",
+          "enabled": true,
+          "params": {
+            "data_dir": "{task_workspace}/local_db/emails",
+            "email": "swright@mcp.com",
+            "password": "scotaW1MyWaw"
+          }
+        },
+        "python_execute": {
+          "type": "python_execute",
+          "enabled": true,
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "type": "claim_done",
+          "enabled": true,
+          "params": {}
+        },
+        "filesystem": {
+          "type": "filesystem",
+          "enabled": true,
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        }
+      },
+      "name": "SetConfCrDdl-seed456"
+    },
+    {
+      "env_class": "gem.envs.set_conf_cr_ddl_s2l.set_conf_cr_ddl_s2l.SetConfCrDdlS2LEnv",
+      "env_params": {
+        "num_target": 32,
+        "num_noise": 44,
+        "noise_emails": 5,
+        "max_conferences": 200,
+        "enable_reminders": true,
+        "enable_extensions": true,
+        "base_date": "2025-09-15",
+        "deadline_offset": 15,
+        "seed": 789,
+        "verbose": false
+      },
+      "mcp_servers": {
+        "calendar": {
+          "type": "calendar",
+          "enabled": true,
+          "params": {
+            "data_dir": "{task_workspace}/local_db/calendar"
+          }
+        },
+        "email": {
+          "type": "email",
+          "enabled": true,
+          "params": {
+            "data_dir": "{task_workspace}/local_db/emails",
+            "email": "swright@mcp.com",
+            "password": "scotaW1MyWaw"
+          }
+        },
+        "python_execute": {
+          "type": "python_execute",
+          "enabled": true,
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "type": "claim_done",
+          "enabled": true,
+          "params": {}
+        },
+        "filesystem": {
+          "type": "filesystem",
+          "enabled": true,
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        }
+      },
+      "name": "SetConfCrDdl-seed789"
+    },
+    {
+      "env_class": "gem.envs.set_conf_cr_ddl_s2l.set_conf_cr_ddl_s2l.SetConfCrDdlS2LEnv",
+      "env_params": {
+        "num_target": 32,
+        "num_noise": 44,
+        "noise_emails": 5,
+        "max_conferences": 200,
+        "enable_reminders": true,
+        "enable_extensions": true,
+        "base_date": "2025-09-15",
+        "deadline_offset": 15,
+        "seed": 2024,
+        "verbose": false
+      },
+      "mcp_servers": {
+        "calendar": {
+          "type": "calendar",
+          "enabled": true,
+          "params": {
+            "data_dir": "{task_workspace}/local_db/calendar"
+          }
+        },
+        "email": {
+          "type": "email",
+          "enabled": true,
+          "params": {
+            "data_dir": "{task_workspace}/local_db/emails",
+            "email": "swright@mcp.com",
+            "password": "scotaW1MyWaw"
+          }
+        },
+        "python_execute": {
+          "type": "python_execute",
+          "enabled": true,
+          "params": {
+            "workspace_dir": "{agent_workspace}"
+          }
+        },
+        "claim_done": {
+          "type": "claim_done",
+          "enabled": true,
+          "params": {}
+        },
+        "filesystem": {
+          "type": "filesystem",
+          "enabled": true,
+          "params": {
+            "workspace_path": "{agent_workspace}"
+          }
+        }
+      },
+      "name": "SetConfCrDdl-seed2024"
+    }
+  ]
+}
