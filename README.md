@@ -346,10 +346,10 @@ We appreciate [gem](https://github.com/axon-rl/gem) to open-source a nice agenti
 If you find LOCA-bench useful in your research, please cite our paper:
 
 ```bibtex
-@article{loca-bench2026,
-  title   = {LOCA-bench: Benchmarking Language Agents Under Controllable and Extreme Context Growth},
-  author  = {Zeng, Weihao and Huang, Yuzhen and He, Junxian},
-  journal = {arXiv preprint arXiv:2602.07962},
-  year    = {2026}
+@article{zeng2026loca,
+  title={LOCA-bench: Benchmarking Language Agents Under Controllable and Extreme Context Growth},
+  author={Zeng, Weihao and Huang, Yuzhen and He, Junxian},
+  journal={arXiv preprint arXiv:2602.07962},
+  year={2026}
 }
 ```
