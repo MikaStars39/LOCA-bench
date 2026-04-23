@@ -314,6 +314,9 @@ def make_aihubmix_api_request(
         "Content-Type": "application/json",
         "Authorization": "Bearer " + str(current_api_key)
     }
+    _extra_h = os.environ.get("LOCA_EXTRA_HEADERS")
+    if _extra_h:
+        headers.update(json.loads(_extra_h))
 
     if verbose:
         print(f"Headers: {headers}")
@@ -331,6 +334,9 @@ def make_aihubmix_api_request(
         "top_p": top_p,
         "max_tokens": max_tokens
     }
+    _extra_b = os.environ.get("LOCA_EXTRA_BODY")
+    if _extra_b:
+        json_data.update(json.loads(_extra_b))
 
     # Add reasoning control parameters for OpenAI models that support reasoning
     # Convert empty strings to None for proper handling
