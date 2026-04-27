@@ -276,6 +276,7 @@ def make_aihubmix_api_request(
     reasoning_max_tokens: Optional[int] = None,
     reasoning_enabled: bool = True,
     reasoning_exclude: bool = False,
+    timeout: int = 60,
 ):
     """Make AIHubMix API request with retry logic.
 
@@ -292,6 +293,7 @@ def make_aihubmix_api_request(
         max_tokens: Maximum number of tokens to generate
         max_context_size: Maximum context size in tokens (if set, will trim messages to fit)
         context_awareness: If True, will also remove token usage user messages when trimming
+        timeout: Request timeout in seconds
 
     Returns:
         Processed response object with type and data
@@ -631,7 +633,7 @@ def make_aihubmix_api_request(
                 aihubmix_api_url,
                 headers=headers,
                 json=json_data,
-                timeout=60
+                timeout=timeout
             )
             if verbose:
                 print(f"Response status: {response.status_code}")
@@ -1322,6 +1324,7 @@ def run_single_task(
                 reasoning_max_tokens=reasoning_max_tokens,
                 reasoning_enabled=reasoning_enabled,
                 reasoning_exclude=reasoning_exclude,
+                timeout=timeout,
             )
 
             # Track API usage per step
@@ -1779,6 +1782,7 @@ def run_single_task(
                         reasoning_max_tokens=reasoning_max_tokens,
                         reasoning_enabled=reasoning_enabled,
                         reasoning_exclude=reasoning_exclude,
+                        timeout=timeout,
                     )
                     
                     # Update messages if they were trimmed (before generating summary)
