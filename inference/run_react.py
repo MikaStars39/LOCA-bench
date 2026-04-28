@@ -1211,8 +1211,7 @@ def run_single_task(
             for config in mcp_configs.values()
         )
 
-        # Only fix schema for OpenAI models
-        fix_schema = "openai" in model.lower()
+        fix_schema = True
 
         if has_programmatic:
             tool = ProgrammaticToolCallingTool(mcp_config, validate_on_init=False, execution_timeout=120.0, fix_schema_for_openai=fix_schema)
